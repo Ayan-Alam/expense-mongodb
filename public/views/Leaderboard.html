@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Leaderboard Table</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Expense-Ease🪙</a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="/expense/userDashboard">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="reportBtn" onclick="alert_msg()">💸Report</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="LeaderboardBtn" onclick="alert_msg()">💸Leaderboard</a>
+          </li>
+        </ul>
+      </div>
+      <div class="ml-auto">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#">👑Premium Member</a>
+            <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="logout">Log out</a>
+          </li>
+        </ul>
+      </div>
+</nav>
+  <div class="container mt-5">
+    <h1 class="mb-4">🪜Leaderboard</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Position</th>
+          <th scope="col">Name</th>
+          <th scope="col">Expenses</th>
+        </tr>
+      </thead>
+      <tbody id="leaderboard-body">
+        
+      </tbody>
+    </table>
+  </div>
+  
+ 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="js/Leaderboard.js"></script>
+</body>
+</html>

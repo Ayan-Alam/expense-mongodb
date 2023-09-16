@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense-Ease 🖩</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .form-box {
+      background-color: #f5f5f5;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .table-box {
+      background-color: #f5f5f5;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .navbar {
+      border-bottom: none; 
+    }
+    .navbar-brand {
+      margin-right: auto;
+      margin-left: 20px;
+    }
+    .navbar-nav {
+      margin-right: auto; 
+    }
+    .navbar-nav:last-child {
+      margin-right: 0; 
+    }
+    </style>
+</head>
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Expense-Ease🪙</a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="/expense/userDashboard">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="reportBtn" onclick="alert_msg()">💸Report</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="LeaderboardBtn" onclick="alert_msg()">💸Leaderboard</a>
+        </li>
+      </ul>
+    </div>
+    <div class="ml-auto">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="#" id="razorpaybtn">💳Buy Premium</a>
+          <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="logout">Log out</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container mt-5">
+    <div class="form-box">
+      <form id="expense-form" onsubmit="return false;">
+        <div class="row mb-3">
+          <div class="col">
+            <label for="amount" class="form-label">Amount</label>
+            <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter amount">
+          </div>
+          <div class="col">
+            <label for="description" class="form-label">Description</label>
+            <input type="text" class="form-control" id="description" name="description" placeholder="Enter description">
+          </div>
+          <div class="col">
+            <label for="category" class="form-label">Select Category</label>
+            <select class="form-select" id="category" name="category">
+              <option value="Mobile & Computers">Mobile & Computers</option>
+              <option value="Fashion & Beauty">Fashion & Beauty</option>
+              <option value="Groceries & Pet Supplies">Groceries & Pet Supplies</option>
+              <option value="Home Furniture & Application">Home Furniture & Application</option>
+              <option value="Music Video & Gaming">Music Video & Gaming</option>
+              <option value="Book and Education">Book and Education</option>
+              <option value="Toys Children & Baby">Toys Children & Baby</option>
+              <option value="Payments & Booking">Payments & Booking</option>
+              <option value="Automotive">Automotive</option>
+              <option value="Office & Professional">Office & Professional</option>
+              <option value="Sports Outdoor & Travel">Sports Outdoor & Travel</option>
+              <option value="Gifting">Gifting</option>
+              <option value="Bills & EMI's">Bills & EMI's</option>
+              <option value="Others">Others</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary"id="addlogin">Add Expense</button>
+      </form>
+    </div>
+    <div class="mt-4 table-box">
+      <table class="table" id="tables">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="expense-table-body">
+        </tbody>
+      </table>
+      <nav aria-label="Page navigation example">
+        <ul id="paginationUL" class="pagination justify-content-md-end">
+        </ul>
+      </nav>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/homePage.js"></script>
+  <script>
+    function alert_msg(){
+      alert("Only Avaiable for Premium User");
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+
