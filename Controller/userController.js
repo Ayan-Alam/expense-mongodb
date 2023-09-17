@@ -1,7 +1,5 @@
 const path = require('path');
-const Sequelize = require("sequelize");
-const sequelize = require('../utils/database');
-const user = require('../models/userModel');
+const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -12,8 +10,8 @@ function generateAccessToken(id) {
   
 exports.isPremium = async (req,res)=>{
 	try {
-	  if (req.user.ispremiumuser) {
-		return res.json({ ispremiumuser: true });
+	  if (req.user.isPremiumUser) {
+		return res.json({ isPremiumUser: true });
 	  }
 	} catch (error) {
 	  console.log(error);
@@ -26,29 +24,26 @@ exports.getIndex = (req, res, next) => {
 
 exports.alluser = async(req,res,next)=>{
 	try {
-	user.findAll({
-		attributes: [
-		  [sequelize.col("name"), "name"],
-		  [sequelize.col("totalExpenses"), "totalExpenses"],
-		],
-		order: [[sequelize.col("totalExpenses"), "DESC"]],
-	  }).then((users) => {
-		const result = users.map((user) => ({
-		  name: user.getDataValue("name"),
-		  totalExpenses: user.getDataValue("totalExpenses"),
-		}));
-		res.send(JSON.stringify(result));
-	  });
-	} catch (error) {
-	  console.log(error);
-	}
+		User.find()
+		  .select({ name: 1, totalExpenses: 1, _id: 0 })
+		  .sort({ totalExpenses: -1 })
+		  .then((users) => {
+			const result = users.map((user) => ({
+			  name: user.name,
+			  totalExpenses: user.totalExpenses,
+			}));
+			res.send(JSON.stringify(result));
+		  });
+	  } catch (error) {
+		console.log(error);
+	  }
 }
 
 exports.getUser = async (req,res,next)=>{
 	try{
 		const email = req.body.loginEmail;
 		const password = req.body.loginPassword;
-		await user.findOne({where : {email : email}}).then((e)=>{
+		await User.findOne({email : email}).then((e)=>{
 			if(e){
 				bcrypt.compare(password,e.password,(err,result)=>{
 					if(err){
@@ -84,23 +79,35 @@ exports.addUser = async (req, res, next) => {
 		const name = req.body.name;
 		const email = req.body.email;
 		const password = req.body.password;
-		await user.findOne({where : {email : email}}).then((users) =>{
-			if (users){
-				res.send(`<script>alert('User Already Exist'); window.location.href = '/login'</script>`)
+	
+		await User.findOne({ email: email })
+		  .then(async (user) => {
+			if (user) {
+			  res
+				.status(409)
+				.send(
+				  `<script>alert('This email is already taken. Please choose another one.'); window.location.href='/login'</script>`
+				);
 			} else {
-				bcrypt.hash(password,10,async(err,hash)=>{
-					await user.create({
-						name: name,
-						email: email,
-						password: hash,
-					})
-					res.send(`<script>alert('User Created Successfully'); window.location.href = '/login'</script>`);
+			   bcrypt.hash(password, 10,async (err,hash)=>{
+				const newUser = new User({
+					name: name,
+					email: email,
+					password: hash,
+				  });
+				  await newUser.save();
 				})
+			  res
+				.status(200)
+				.send(
+				  `<script>alert('User Created Successfully!'); window.location.href='/login'</script>`
+				);
 			}
-	}).catch((err) => console.log(err));
-	} catch (err) {
-        console.log(err);
-	}
+		  })
+		  .catch((err) => console.log(err));
+	  } catch (error) {
+		console.log(error);
+	  }
 }
 
 

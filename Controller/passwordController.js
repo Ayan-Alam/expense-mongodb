@@ -1,7 +1,7 @@
 const path = require('path');
 const Sib = require('sib-api-v3-sdk');
 const ResetPassword = require('../models/passwordModel');
-const user = require('../models/userModel');
+const User = require('../models/userModel');
 const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
 const saltRounds = 10;
@@ -31,7 +31,7 @@ exports.sendMail = async(req,res,next)=>{
 		const email = req.body.email;
 		const requestId = uuidv4();
 	
-		const recepientEmail = await user.findOne({ where: { email: email } });
+		const recepientEmail = await User.findOne({ where: { email: email } });
 	
 		if (!recepientEmail) {
 		  return res
@@ -39,11 +39,13 @@ exports.sendMail = async(req,res,next)=>{
 			.json({ message: "Please provide the registered email!" });
 		}
 	
-		const resetRequest = await ResetPassword.create({
-		  id: requestId,
-		  isActive: true,
-		  userId: recepientEmail.dataValues.id,
-		});
+		const resetRequest = new ResetPassword({
+			id: requestId,
+			isActive: true,
+			userId: recepientEmail._id,
+		  });
+	  
+		await resetRequest.save();
 	
 		const client = Sib.ApiClient.instance;
 		const apiKey = client.authentications["api-key"];
@@ -83,17 +85,17 @@ exports.resetPassword = async(req,res,next)=>{
 	try {
 		const requestId = req.headers.referer.split("/");
 		const password = req.body.password;
-		const checkResetRequest = await ResetPassword.findAll({
+		const checkResetRequest = await ResetPassword.findOne({
 		  where: { id: requestId[requestId.length - 1], isActive: true },
 		});
 		if (checkResetRequest[0]) {
 		  const userId = checkResetRequest[0].dataValues.userId;
-		  const result = await ResetPassword.update(
+		  const result = await ResetPassword.updateOne(
 			{ isActive: false },
 			{ where: { id: requestId } }
 		  );
 		  const newPassword = await hashPassword(password);
-		  const users = await user.update(
+		  const users = await User.updateOne(
 			{ password: newPassword },
 			{ where: { id: userId } }
 		  );

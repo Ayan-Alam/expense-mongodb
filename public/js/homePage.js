@@ -154,7 +154,7 @@ async function isPremium(){
   const res = await axios.get("http://localhost:3000/login/ispremiumUser", {
     headers: { Authorization: token },
   });
-  if (res.data.ispremiumuser) {
+  if (res.data.isPremiumUser) {
     razorpaybtn.innerHTML ="👑Premium Member";
     reportBtn.removeAttribute("onclick");
     LeaderboardBtn.removeAttribute("onclick");

@@ -1,4 +1,4 @@
-const mongoose = requies('mongoose');
+const mongoose = require('mongoose');
 
 const expense =  new mongoose.Schema({
   date: {
