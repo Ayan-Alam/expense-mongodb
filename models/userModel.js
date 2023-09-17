@@ -1,4 +1,35 @@
-const Sequelize = require('sequelize');
+const mongoose = require("mongoose");
+
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  isPremiumUser: {
+    type: Boolean,
+    default: false,
+  },
+  totalExpenses: {
+    type: Number,
+    default: 0,
+  },
+});
+
+const User = mongoose.model("User", userSchema);
+
+module.exports = User;
+
+
+/*const Sequelize = require('sequelize');
 
 const sequelize = require('../utils/database');
 
@@ -21,4 +52,4 @@ const user = sequelize.define('user',{
         defaultValue: 0,
       },
 })
-module.exports = user;
+module.exports = user;*/
